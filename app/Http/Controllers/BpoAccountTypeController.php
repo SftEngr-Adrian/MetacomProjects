@@ -1,35 +1,34 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\EducationalAttainment;
 use Exception;
+use App\Models\BpoAccountType;
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
-class EducationalAttainmentController extends Controller
+class BpoAccountTypeController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *     * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
         try {
-            $educationalattainments = EducationalAttainment::select(
-                'educational_attainments.education_attainment_id', 
-                'educational_attainments.educational_attainment_value')
-                ->where('educational_attainments.is_deleted', '!=', '1')
+            $bpoaccountypes = BpoAccountType::select(
+                'bpo_account_types.bpo_account_type_id', 
+                'bpo_account_types.bpo_account_type_value')
+                ->where('bpo_account_types.is_deleted', '!=', '1')
             ->get();
 
         } catch (Exception $e) {
             Log::error("$e");
         }
         if ($request->ajax()) {
-            return DataTables::class::of($educationalattainments)->make(true);
+            return DataTables::class::of($bpoaccountypes)->make(true);
         } else {
-            return response()->json($educationalattainments);
+            return response()->json($bpoaccountypes);
         }
     }
 
@@ -48,8 +47,8 @@ class EducationalAttainmentController extends Controller
     {
         try {
             $rules = [
-                'education_attainment_id' => 'required|max:255|unique:educational_attainments',
-                'educational_attainment_value' => 'required'
+                'bpo_account_type_id' => 'required|max:255|unique:bpo_account_types',
+                'bpo_account_type_value' => 'required'
                 //'team_leader' => 'required|int|unique:sub_branches'
             ];
             $validator = Validator::make($request->all(), $rules);
@@ -59,9 +58,9 @@ class EducationalAttainmentController extends Controller
                     'errors' => $validator->errors()
                 ]);
             } else {
-                EducationalAttainment::create([
-                    'education_attainment_id' => $request->get('education_attainment_id'),
-                    'educational_attainment_value' => ucwords($request->get('educational_attainment_value')),
+                BpoAccountType::create([
+                    'bpo_account_type_id' => $request->get('bpo_account_type_id'),
+                    'bpo_account_type_value' => ucwords($request->get('bpo_account_type_value')),
                 ]);
 
                 return response()->json([
@@ -92,12 +91,12 @@ class EducationalAttainmentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
         try {
             $rules = [
-                'education_attainment_id' => 'required|max:255|unique:educational_attainments,education_attainment_id,' . $id . ',education_attainment_id',
-                'educational_attainment_value' => 'required'                               //column name       //id        //column_id          
+                'bpo_account_type_id' => 'required|max:255|unique:bpo_account_types,bpo_account_type_id,' . $id . ',bpo_account_type_id',
+                'bpo_account_type_value' => 'required'                               //column name       //id        //column_id          
                 //'team_leader' => 'required|max:255|unique:sub_branches,team_leader,' . $id . ',sub_branch_id',
             ];
             $validator = Validator::make($request->all(), $rules);
@@ -107,9 +106,9 @@ class EducationalAttainmentController extends Controller
                     'errors' => $validator->errors()
                 ]);
             } else {
-                $affected_rows = EducationalAttainment::where('education_attainment_id', $id)->update([
-                    'education_attainment_id' => $request->get('education_attainment_id'),
-                    'educational_attainment_value' => ucwords($request->get('educational_attainment_value')),
+                $affected_rows = BpoAccountType::where('bpo_account_type_id', $id)->update([
+                    'bpo_account_type_id' => $request->get('bpo_account_type_id'),
+                    'bpo_account_type_value' => ucwords($request->get('bpo_account_type_value')),
                 ]);
 
                 if ($affected_rows > 0) {
@@ -130,10 +129,10 @@ class EducationalAttainmentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
         try {
-            $updated = EducationalAttainment::where('education_attainment_id', $id)->update([
+            $updated = BpoAccountType::where('bpo_account_type_id', $id)->update([
                 'is_deleted' => 1
             ]);
 

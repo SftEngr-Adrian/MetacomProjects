@@ -1,35 +1,34 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\EducationalAttainment;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
+use App\Models\SystemId;
 use Illuminate\Http\Request;
 
-class EducationalAttainmentController extends Controller
+class SystemIdController extends Controller
 {
-    /**
+     /**
      * Display a listing of the resource.
-     *     * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
         try {
-            $educationalattainments = EducationalAttainment::select(
-                'educational_attainments.education_attainment_id', 
-                'educational_attainments.educational_attainment_value')
-                ->where('educational_attainments.is_deleted', '!=', '1')
+            $systemid = Systemid::select(
+                'systemid.systemid_id', 
+                'systemid.systemid_value')
+                ->where('systemid.is_deleted', '!=', '1')
             ->get();
 
         } catch (Exception $e) {
             Log::error("$e");
         }
         if ($request->ajax()) {
-            return DataTables::class::of($educationalattainments)->make(true);
+            return DataTables::class::of($systemid)->make(true);
         } else {
-            return response()->json($educationalattainments);
+            return response()->json($systemid);
         }
     }
 
@@ -48,8 +47,8 @@ class EducationalAttainmentController extends Controller
     {
         try {
             $rules = [
-                'education_attainment_id' => 'required|max:255|unique:educational_attainments',
-                'educational_attainment_value' => 'required'
+                'systemid_id' => 'required|max:255|unique:systemid',
+                'systemid_value' => 'required'
                 //'team_leader' => 'required|int|unique:sub_branches'
             ];
             $validator = Validator::make($request->all(), $rules);
@@ -59,9 +58,9 @@ class EducationalAttainmentController extends Controller
                     'errors' => $validator->errors()
                 ]);
             } else {
-                EducationalAttainment::create([
-                    'education_attainment_id' => $request->get('education_attainment_id'),
-                    'educational_attainment_value' => ucwords($request->get('educational_attainment_value')),
+                systemid::create([
+                    'systemid_id' => $request->get('systemid_id'),
+                    'systemid_value' => ucwords($request->get('systemid_value')),
                 ]);
 
                 return response()->json([
@@ -92,12 +91,12 @@ class EducationalAttainmentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
         try {
             $rules = [
-                'education_attainment_id' => 'required|max:255|unique:educational_attainments,education_attainment_id,' . $id . ',education_attainment_id',
-                'educational_attainment_value' => 'required'                               //column name       //id        //column_id          
+                'systemid_id' => 'required|max:255|unique:systemid,systemid_id,' . $id . ',systemid_id',
+                'systemid_value' => 'required'                               //column name       //id        //column_id          
                 //'team_leader' => 'required|max:255|unique:sub_branches,team_leader,' . $id . ',sub_branch_id',
             ];
             $validator = Validator::make($request->all(), $rules);
@@ -107,9 +106,9 @@ class EducationalAttainmentController extends Controller
                     'errors' => $validator->errors()
                 ]);
             } else {
-                $affected_rows = EducationalAttainment::where('education_attainment_id', $id)->update([
-                    'education_attainment_id' => $request->get('education_attainment_id'),
-                    'educational_attainment_value' => ucwords($request->get('educational_attainment_value')),
+                $affected_rows = systemid::where('systemid_id', $id)->update([
+                    'systemid_id' => $request->get('systemid_id'),
+                    'systemid_value' => ucwords($request->get('systemid_value')),
                 ]);
 
                 if ($affected_rows > 0) {
@@ -130,10 +129,10 @@ class EducationalAttainmentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
         try {
-            $updated = EducationalAttainment::where('education_attainment_id', $id)->update([
+            $updated = systemid::where('systemid_id', $id)->update([
                 'is_deleted' => 1
             ]);
 
