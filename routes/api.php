@@ -25,17 +25,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::apiResources([
-    'seeds/educational-attainments' => EducationalAttainmentController::class,
-    'seeds/bpo-experiences' => BpoExperienceController::class,
-    'seeds/interview-types' => InterviewTypeController::class,
-    'seeds/bpo-account-types' => BpoAccountTypeController::class,
-    'seeds/applicant-status' => ApplicantStatusController::class,
-    'seeds/applicant-tags' => ApplicantTagController::class,
-    'seeds/related-bpo-work-experience' => RelatedBpoWorkExperienceController::class,
-    'seeds/nationalities' => NationalitiesController::class,
-    'seeds/work-experience-types' => WorkExperienceTypeController::class,
-    'seeds/systemid' => SystemIdController::class,
-    'seeds/reason-for-not-endorsing' => ReasonForNotEndorsingController::class
+    'records/educational-attainments' => EducationalAttainmentController::class,
+    'records/bpo-experiences' => BpoExperienceController::class,
+    'records/interview-types' => InterviewTypeController::class,
+    'records/bpo-account-types' => BpoAccountTypeController::class,
+    'records/applicant-status' => ApplicantStatusController::class,
+    'records/applicant-tags' => ApplicantTagController::class,
+    'records/related-bpo-work-experience' => RelatedBpoWorkExperienceController::class,
+    'records/nationalities' => NationalitiesController::class,
+    'records/work-experience-types' => WorkExperienceTypeController::class,
+    'records/systemid' => SystemIdController::class,
+    'records/reason-for-not-endorsing' => ReasonForNotEndorsingController::class
 
     
 ]);
